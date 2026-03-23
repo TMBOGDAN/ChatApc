@@ -10,11 +10,11 @@ const { Pool } = require('pg');
 // ======================
 
 const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'nexus_chat',
-    password: 'matei123',
-    port: 5432,
+    user: '',
+    host: '',
+    database: '',
+    password: '',
+    port: ,
 });
 
 pool.connect()
@@ -27,6 +27,12 @@ pool.connect()
 // ======================
 // WebSocket Server
 // ======================
+
+const sessions = new Map(); 
+
+const getSessionKey = (a, b) => {
+    return [a, b].sort().join('|');
+};
 
 const wss = new WebSocket.Server({ port: 8080 }, () => {
     console.log('WebSocket server running on ws://localhost:8080');
@@ -66,14 +72,14 @@ wss.on('connection', (ws) => {
                 );
 
                 if (res.rows.length > 0) {
-                    // return user data so client can create a User object
+                    
                     const user = res.rows[0];
                     const loginRes = {
                         type: 'login_result',
                         success: true,
                         message: 'Login successful',
                         user: {
-                            // ensure numeric id (pg returns as string sometimes)
+                            
                             id: Number(user.id),
                             username: user.username,
                             email: user.email
@@ -144,54 +150,45 @@ wss.on('connection', (ws) => {
         }
 
         // ======================
-        // SEND FRIEND REQUEST
+        // FRIEND REQUEST
         // ======================
-        if (data.type === 'send_friend_request') {
-            if (!currentUser) {
-                ws.send(JSON.stringify({
-                    type: 'friend_request_result',
-                    success: false,
-                    message: 'Not logged in'
-                }));
-                return;
-            }
+        if (data.type === 'friend request') {
+    const { sender_user, receiver_user } = data;
 
-            const { sender, receiver } = data;
+    try {
+        // Get sender ID
+        const senderRes = await pool.query(
+            'SELECT id FROM account WHERE username = $1',
+            [sender_user]
+        );
 
-            try {
-                // Get sender ID
-                const senderRes = await pool.query(
-                    'SELECT id FROM account WHERE username = $1',
-                    [sender]
-                );
+        if (senderRes.rows.length === 0) {
+            ws.send(JSON.stringify({
+                type: 'friend request result',
+                success: false,
+                message: 'Sender not found!'
+            }));
+            return;
+        }
 
-                if (senderRes.rows.length === 0) {
-                    ws.send(JSON.stringify({
-                        type: 'friend_request_result',
-                        success: false,
-                        message: 'Sender not found!'
-                    }));
-                    return;
-                }
+        const receiverRes = await pool.query(
+            'SELECT id FROM account WHERE username = $1',
+            [receiver_user]
+        );
 
-                const receiverRes = await pool.query(
-                    'SELECT id FROM account WHERE username = $1',
-                    [receiver]
-                );
-
-                if (receiverRes.rows.length === 0) {
-                    ws.send(JSON.stringify({
-                        type: 'friend_request_result',
-                        success: false,
-                        message: 'Receiver not found!'
-                    }));
-                    return;
-                }
+        if (receiverRes.rows.length === 0) {
+            ws.send(JSON.stringify({
+                type: 'friend request result',
+                success: false,
+                message: 'Receiver not found!'
+            }));
+            return;
+        }
 
         const requester_id = senderRes.rows[0].id;
         const receiver_id = receiverRes.rows[0].id;
 
-        // 🔥 do not allow self-add
+        
         if (requester_id === receiver_id) {
             ws.send(JSON.stringify({
                 type: 'friend request result',
@@ -201,7 +198,7 @@ wss.on('connection', (ws) => {
             return;
         }
 
-        // Check if relationship already exists
+        
         const existing = await pool.query(
             `SELECT 1 FROM friendships
              WHERE (requester_id = $1 AND receiver_id = $2)
@@ -380,116 +377,170 @@ wss.on('connection', (ws) => {
         // ======================
         // get friends list
         // ======================
-
-// get friends list
-if(data.type === 'get_friends') {
-    const { userId } = data;
-    try {
-        const result = await pool.query(`
-            SELECT 
-                CASE
-                    WHEN requester_id = $1 THEN receiver_id
-                    ELSE requester_id
-                END AS friend_id
-            FROM friendships
-            WHERE (requester_id = $1 OR receiver_id = $1)
-              AND status = 'accepted'
-        `, [userId]);
-
-        const friendIds = result.rows.map(r => r.friend_id);
-        let friends = [];
-
-        if(friendIds.length > 0){
-            const resUsers = await pool.query(
-                `SELECT username FROM account WHERE id = ANY($1::bigint[])`,
-                [friendIds]
-            );
-            friends = resUsers.rows.map(r => r.username);
+        if(data.type==='get_friends'){
+             const { user_id } = data;
+             try{
+               const result1 = await pool.query(`SELECT ac.username FROM friendships fr 
+                JOIN account ac ON fr.receiver_id = ac.id
+                WHERE fr.requester_id = $1 AND fr.status = 'accepted'`, [user_id]);              
+            const result2 = await pool.query(`SELECT ac.username FROM friendships fr 
+                JOIN account ac ON fr.requester_id = ac.id
+                WHERE fr.receiver_id = $1 AND fr.status = 'accepted'`, [user_id]);
+            
+            const friends = [
+                ...result1.rows.map(row => row.username),
+                ...result2.rows.map(row => row.username)
+            ];
+            
+            ws.send(JSON.stringify({
+                type: 'get_friends_result',
+                success: true,
+                friends: friends
+            }));
+             }
+             catch(err){
+             console.error(err);
+             ws.send(JSON.stringify({
+                 type: 'get_friends_result',
+                 success: false,
+                 message: 'Server error'
+             }));
+             }
         }
 
-        ws.send(JSON.stringify({
-            type: 'get_friends_result',
-            success: true,
-            friends: friends
-        }));
-
-    } catch(err) {
-        console.error(err);
-        ws.send(JSON.stringify({
-            type: 'get_friends_result',
-            success: false,
-            message: 'Server error'
-        }));
-    }
-}
-
-         // ======================
+        // ======================
         // GET MESSAGES
         // ======================
         if (data.type === 'get_messages') {
 
-    const myUser = data.myUser;
-    const friendUser = data.friendUser;
+            const myUser = data.myUser;
+            const friendUser = data.friendUser;
+            const key = getSessionKey(myUser, friendUser);
 
-    try {
+            
+            if (sessions.has(key)) {
+                const session = sessions.get(key);
+                ws.send(JSON.stringify({
+                    type: 'messages_list',
+                    messages: session.messages
+                }));
+                return;
+            }
 
-        const result = await pool.query(
-            `SELECT sender_user, receiver_user, content, sent_at
-             FROM messages
-             WHERE 
-             (sender_user = $1 AND receiver_user = $2)
-             OR
-             (sender_user = $2 AND receiver_user = $1)
-             ORDER BY sent_at`,
-            [myUser, friendUser]
-        );
+       
+            try {
+                const result = await pool.query(
+                    `SELECT sender_user, receiver_user, content, sent_at
+                     FROM messages
+                     WHERE 
+                     (sender_user = $1 AND receiver_user = $2)
+                     OR
+                     (sender_user = $2 AND receiver_user = $1)
+                     ORDER BY sent_at`,
+                    [myUser, friendUser]
+                );
 
-        ws.send(JSON.stringify({
-            type: "messages_list",
-            messages: result.rows
-        }));
+                const messages = result.rows.map(row => ({
+                    sender_user: row.sender_user,
+                    receiver_user: row.receiver_user,
+                    content: row.content,
+                    sent_at: row.sent_at.toISOString ? row.sent_at.toISOString() : row.sent_at
+                }));
 
-    } catch (err) {
-        console.error("Error loading messages:", err);
+                sessions.set(key, { messages: messages, unsaved: [] });
 
-        ws.send(JSON.stringify({
-            type: "messages_list",
-            messages: []
-        }));
-    }
+                ws.send(JSON.stringify({
+                    type: 'messages_list',
+                    messages: messages
+                }));
+
+            } catch (err) {
+                console.error('Error loading messages:', err);
+
+                ws.send(JSON.stringify({
+                    type: 'messages_list',
+                    messages: []
+                }));
+            }
+
+            return;
         }
+
         // ======================
-        // NORMAL MESSAGE
+        // SAVE SESSION
+        // ======================
+        if (data.type === 'save_session') {
+            const myUser = data.myUser;
+            const friendUser = data.friendUser;
+            const key = getSessionKey(myUser, friendUser);
+
+            const session = sessions.get(key);
+            if (!session || session.unsaved.length === 0) {
+                ws.send(JSON.stringify({ type: 'save_session_result', success: true, message: 'No pending messages to save' }));
+                return;
+            }
+
+            try {
+                const insertValues = [];
+                const params = [];
+                let paramIndex = 1;
+
+                for (const msg of session.unsaved) {
+                    insertValues.push(`($${paramIndex++}, $${paramIndex++}, $${paramIndex++}, $${paramIndex++})`);
+                    params.push(msg.sender_user, msg.receiver_user, msg.content, msg.sent_at);
+                }
+
+                const queryText = `INSERT INTO messages(sender_user, receiver_user, content, sent_at) VALUES ${insertValues.join(',')}`;
+                await pool.query(queryText, params);
+
+                session.unsaved = [];
+                sessions.set(key, session);
+
+                ws.send(JSON.stringify({ type: 'save_session_result', success: true, message: 'Session saved' }));
+            } catch (err) {
+                console.error('Error saving session:', err);
+                ws.send(JSON.stringify({ type: 'save_session_result', success: false, message: 'Error while saving session' }));
+            }
+
+            return;
+        }
+
+        // ======================
+        // NORMAL MESSAGE 
         // ======================
         if (data.type === 'message') {
 
-    const { sender_username, receiver_username, text } = data;
+            const { sender_username, receiver_username, text } = data;
+            const sent_at = new Date().toISOString();
+            const key = getSessionKey(sender_username, receiver_username);
 
-    try {
-        await pool.query(
-            `INSERT INTO messages(sender_user, receiver_user, content, sent_at)
-             VALUES($1, $2, $3, NOW())`,
-            [sender_username, receiver_username, text]
-        );
-    } catch (err) {
-        console.error('Error inserting message:', err.stack);
-        return;
-    }
-
-    // trimitem mesajul doar utilizatorilor relevanți
-    wss.clients.forEach(client => {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify({
-                type: 'message',
+            const messageObject = {
                 sender_user: sender_username,
                 receiver_user: receiver_username,
-                content: text
-            }));
-        }
-    });
+                content: text,
+                sent_at
+            };
 
-    return;
-}
+            const session = sessions.get(key) || { messages: [], unsaved: [] };
+            session.messages.push(messageObject);
+            session.unsaved.push(messageObject);
+            sessions.set(key, session);
+
+            
+            wss.clients.forEach(client => {
+                if (client.readyState === WebSocket.OPEN) {
+                    client.send(JSON.stringify({
+                        type: 'message',
+                        sender_user: sender_username,
+                        receiver_user: receiver_username,
+                        content: text,
+                        sent_at
+                    }));
+                }
+            });
+
+            return;
+        }
 
     });
 

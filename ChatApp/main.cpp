@@ -10,5 +10,4 @@ int main(int argc, char *argv[])
     logW.show();
 
     return a.exec();
-
 }

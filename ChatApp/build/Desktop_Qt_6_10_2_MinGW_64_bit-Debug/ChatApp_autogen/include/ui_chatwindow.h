@@ -25,7 +25,6 @@ QT_BEGIN_NAMESPACE
 class Ui_ChatWindow
 {
 public:
-    QWidget *layoutWidget;
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_2;
     QLabel *fiendUsernameLabel;
@@ -41,16 +40,17 @@ public:
     {
         if (ChatWindow->objectName().isEmpty())
             ChatWindow->setObjectName("ChatWindow");
-        ChatWindow->resize(524, 496);
-        layoutWidget = new QWidget(ChatWindow);
-        layoutWidget->setObjectName("layoutWidget");
-        layoutWidget->setGeometry(QRect(0, 10, 511, 471));
-        verticalLayout = new QVBoxLayout(layoutWidget);
+        ChatWindow->resize(518, 554);
+        QSizePolicy sizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(ChatWindow->sizePolicy().hasHeightForWidth());
+        ChatWindow->setSizePolicy(sizePolicy);
+        verticalLayout = new QVBoxLayout(ChatWindow);
         verticalLayout->setObjectName("verticalLayout");
-        verticalLayout->setContentsMargins(0, 0, 0, 0);
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName("horizontalLayout_2");
-        fiendUsernameLabel = new QLabel(layoutWidget);
+        fiendUsernameLabel = new QLabel(ChatWindow);
         fiendUsernameLabel->setObjectName("fiendUsernameLabel");
 
         horizontalLayout_2->addWidget(fiendUsernameLabel);
@@ -59,7 +59,7 @@ public:
 
         horizontalLayout_2->addItem(horizontalSpacer);
 
-        profileButton = new QPushButton(layoutWidget);
+        profileButton = new QPushButton(ChatWindow);
         profileButton->setObjectName("profileButton");
 
         horizontalLayout_2->addWidget(profileButton);
@@ -67,30 +67,31 @@ public:
 
         verticalLayout->addLayout(horizontalLayout_2);
 
-        messageArea = new QListWidget(layoutWidget);
+        messageArea = new QListWidget(ChatWindow);
         messageArea->setObjectName("messageArea");
-        QSizePolicy sizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(messageArea->sizePolicy().hasHeightForWidth());
         messageArea->setSizePolicy(sizePolicy);
-        messageArea->setMaximumSize(QSize(16777215, 10000));
 
         verticalLayout->addWidget(messageArea);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName("horizontalLayout");
-        emojiButton = new QPushButton(layoutWidget);
+        emojiButton = new QPushButton(ChatWindow);
         emojiButton->setObjectName("emojiButton");
 
         horizontalLayout->addWidget(emojiButton);
 
-        inputLine = new QLineEdit(layoutWidget);
+        inputLine = new QLineEdit(ChatWindow);
         inputLine->setObjectName("inputLine");
+        QSizePolicy sizePolicy1(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Preferred);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(inputLine->sizePolicy().hasHeightForWidth());
+        inputLine->setSizePolicy(sizePolicy1);
 
         horizontalLayout->addWidget(inputLine);
 
-        sendButton = new QPushButton(layoutWidget);
+        sendButton = new QPushButton(ChatWindow);
         sendButton->setObjectName("sendButton");
 
         horizontalLayout->addWidget(sendButton);

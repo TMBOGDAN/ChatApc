@@ -23,7 +23,6 @@ QT_BEGIN_NAMESPACE
 class Ui_FriendManage
 {
 public:
-    QWidget *layoutWidget;
     QGridLayout *gridLayout;
     QHBoxLayout *horizontalLayout;
     QLineEdit *lineEditUsername;
@@ -35,20 +34,21 @@ public:
         if (FriendManage->objectName().isEmpty())
             FriendManage->setObjectName("FriendManage");
         FriendManage->resize(542, 567);
-        layoutWidget = new QWidget(FriendManage);
-        layoutWidget->setObjectName("layoutWidget");
-        layoutWidget->setGeometry(QRect(20, 30, 491, 501));
-        gridLayout = new QGridLayout(layoutWidget);
+        QSizePolicy sizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(FriendManage->sizePolicy().hasHeightForWidth());
+        FriendManage->setSizePolicy(sizePolicy);
+        gridLayout = new QGridLayout(FriendManage);
         gridLayout->setObjectName("gridLayout");
-        gridLayout->setContentsMargins(0, 0, 0, 0);
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName("horizontalLayout");
-        lineEditUsername = new QLineEdit(layoutWidget);
+        lineEditUsername = new QLineEdit(FriendManage);
         lineEditUsername->setObjectName("lineEditUsername");
 
         horizontalLayout->addWidget(lineEditUsername);
 
-        btnAddFriend = new QPushButton(layoutWidget);
+        btnAddFriend = new QPushButton(FriendManage);
         btnAddFriend->setObjectName("btnAddFriend");
 
         horizontalLayout->addWidget(btnAddFriend);
@@ -56,8 +56,10 @@ public:
 
         gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
 
-        listWidget = new QListWidget(layoutWidget);
+        listWidget = new QListWidget(FriendManage);
         listWidget->setObjectName("listWidget");
+        sizePolicy.setHeightForWidth(listWidget->sizePolicy().hasHeightForWidth());
+        listWidget->setSizePolicy(sizePolicy);
         listWidget->setSpacing(0);
         listWidget->setGridSize(QSize(0, 0));
         listWidget->setBatchSize(50);

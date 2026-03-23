@@ -1,0 +1,1 @@
+#include "friendsmanage.h"&#10;#include "ui_friendsmanage.h"&#10;&#10;FriendsManage::FriendsManage(QWidget *parent)&#10;    : QWidget(parent)&#10;    , ui(new Ui::FriendsManage)&#10;{&#10;    ui->setupUi(this);&#10;}&#10;&#10;FriendsManage::~FriendsManage()&#10;{&#10;    delete ui;&#10;}&#10;

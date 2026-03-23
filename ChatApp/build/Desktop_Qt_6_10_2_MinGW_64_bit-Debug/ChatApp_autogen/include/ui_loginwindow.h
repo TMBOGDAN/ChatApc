@@ -54,21 +54,24 @@ public:
     QLineEdit *pasRegLineEdit;
     QLineEdit *pas2RegLineEdit;
     QPushButton *crAcButton;
-    QWidget *registerTab_2;
-    QPushButton *sentMButton;
-    QWidget *layoutWidget3;
-    QHBoxLayout *horizontalLayout_4;
-    QLabel *label_4;
-    QLineEdit *lineEdit_7;
 
     void setupUi(QWidget *loginWindow)
     {
         if (loginWindow->objectName().isEmpty())
             loginWindow->setObjectName("loginWindow");
-        loginWindow->resize(583, 335);
+        loginWindow->resize(440, 270);
+        QSizePolicy sizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(loginWindow->sizePolicy().hasHeightForWidth());
+        loginWindow->setSizePolicy(sizePolicy);
+        loginWindow->setMinimumSize(QSize(440, 270));
+        loginWindow->setMaximumSize(QSize(440, 270));
         AccountTabWidget = new QTabWidget(loginWindow);
         AccountTabWidget->setObjectName("AccountTabWidget");
-        AccountTabWidget->setGeometry(QRect(10, 20, 441, 261));
+        AccountTabWidget->setGeometry(QRect(0, 0, 441, 271));
+        sizePolicy.setHeightForWidth(AccountTabWidget->sizePolicy().hasHeightForWidth());
+        AccountTabWidget->setSizePolicy(sizePolicy);
         loginTab = new QWidget();
         loginTab->setObjectName("loginTab");
         label = new QLabel(loginTab);
@@ -194,28 +197,6 @@ public:
         crAcButton->setObjectName("crAcButton");
         crAcButton->setGeometry(QRect(10, 150, 101, 24));
         AccountTabWidget->addTab(registerTab, QString());
-        registerTab_2 = new QWidget();
-        registerTab_2->setObjectName("registerTab_2");
-        sentMButton = new QPushButton(registerTab_2);
-        sentMButton->setObjectName("sentMButton");
-        sentMButton->setGeometry(QRect(10, 60, 80, 24));
-        layoutWidget3 = new QWidget(registerTab_2);
-        layoutWidget3->setObjectName("layoutWidget3");
-        layoutWidget3->setGeometry(QRect(10, 20, 341, 26));
-        horizontalLayout_4 = new QHBoxLayout(layoutWidget3);
-        horizontalLayout_4->setObjectName("horizontalLayout_4");
-        horizontalLayout_4->setContentsMargins(0, 0, 0, 0);
-        label_4 = new QLabel(layoutWidget3);
-        label_4->setObjectName("label_4");
-
-        horizontalLayout_4->addWidget(label_4);
-
-        lineEdit_7 = new QLineEdit(layoutWidget3);
-        lineEdit_7->setObjectName("lineEdit_7");
-
-        horizontalLayout_4->addWidget(lineEdit_7);
-
-        AccountTabWidget->addTab(registerTab_2, QString());
 
         retranslateUi(loginWindow);
 
@@ -241,9 +222,6 @@ public:
         label_6->setText(QCoreApplication::translate("loginWindow", "Reentere password", nullptr));
         crAcButton->setText(QCoreApplication::translate("loginWindow", "Create account", nullptr));
         AccountTabWidget->setTabText(AccountTabWidget->indexOf(registerTab), QCoreApplication::translate("loginWindow", "Register", nullptr));
-        sentMButton->setText(QCoreApplication::translate("loginWindow", "Sent Email", nullptr));
-        label_4->setText(QCoreApplication::translate("loginWindow", "Email", nullptr));
-        AccountTabWidget->setTabText(AccountTabWidget->indexOf(registerTab_2), QCoreApplication::translate("loginWindow", "Recover", nullptr));
     } // retranslateUi
 
 };

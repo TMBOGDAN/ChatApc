@@ -734,33 +734,33 @@ ChatApp_autogen/timestamp: \
 	C:/Sobo/proiecte/NexusChat/ChatApp/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/CMakeFiles/3.30.5/CMakeRCCompiler.cmake \
 	C:/Sobo/proiecte/NexusChat/ChatApp/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/CMakeFiles/3.30.5/CMakeSystem.cmake \
 	C:/Sobo/proiecte/NexusChat/ChatApp/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/ChatApp_autogen/moc_predefs.h \
-	C:/Sobo/proiecte/NexusChat/ChatApp/chatwindow.cpp \
-	C:/Sobo/proiecte/NexusChat/ChatApp/chatwindow.h \
-	C:/Sobo/proiecte/NexusChat/ChatApp/friendmanage.cpp \
-	C:/Sobo/proiecte/NexusChat/ChatApp/friendmanage.h \
-	C:/Sobo/proiecte/NexusChat/ChatApp/friendrequestitem.cpp \
-	C:/Sobo/proiecte/NexusChat/ChatApp/friendrequestitem.h \
-	C:/Sobo/proiecte/NexusChat/ChatApp/friendwidget.cpp \
-	C:/Sobo/proiecte/NexusChat/ChatApp/friendwidget.h \
-	C:/Sobo/proiecte/NexusChat/ChatApp/loginwindow.cpp \
-	C:/Sobo/proiecte/NexusChat/ChatApp/loginwindow.h \
+	C:/Sobo/proiecte/NexusChat/ChatApp/headers/chatwindow.h \
+	C:/Sobo/proiecte/NexusChat/ChatApp/headers/friendmanage.h \
+	C:/Sobo/proiecte/NexusChat/ChatApp/headers/friendrequestitem.h \
+	C:/Sobo/proiecte/NexusChat/ChatApp/headers/friendwidget.h \
+	C:/Sobo/proiecte/NexusChat/ChatApp/headers/loginwindow.h \
+	C:/Sobo/proiecte/NexusChat/ChatApp/headers/mainwindow.h \
+	C:/Sobo/proiecte/NexusChat/ChatApp/headers/message.h \
+	C:/Sobo/proiecte/NexusChat/ChatApp/headers/profilewidget.h \
+	C:/Sobo/proiecte/NexusChat/ChatApp/headers/serverconnection.h \
+	C:/Sobo/proiecte/NexusChat/ChatApp/headers/user.h \
 	C:/Sobo/proiecte/NexusChat/ChatApp/main.cpp \
-	C:/Sobo/proiecte/NexusChat/ChatApp/mainwindow.cpp \
-	C:/Sobo/proiecte/NexusChat/ChatApp/mainwindow.h \
-	C:/Sobo/proiecte/NexusChat/ChatApp/message.cpp \
-	C:/Sobo/proiecte/NexusChat/ChatApp/message.h \
-	C:/Sobo/proiecte/NexusChat/ChatApp/profilewidget.cpp \
-	C:/Sobo/proiecte/NexusChat/ChatApp/profilewidget.h \
-	C:/Sobo/proiecte/NexusChat/ChatApp/serverconnection.cpp \
-	C:/Sobo/proiecte/NexusChat/ChatApp/serverconnection.h \
-	C:/Sobo/proiecte/NexusChat/ChatApp/user.cpp \
-	C:/Sobo/proiecte/NexusChat/ChatApp/user.h \
-	C:/Sobo/proiecte/NexusChat/ChatApp/chatwindow.ui \
-	C:/Sobo/proiecte/NexusChat/ChatApp/friendmanage.ui \
-	C:/Sobo/proiecte/NexusChat/ChatApp/friendrequestitem.ui \
-	C:/Sobo/proiecte/NexusChat/ChatApp/friendwidget.ui \
-	C:/Sobo/proiecte/NexusChat/ChatApp/loginwindow.ui \
-	C:/Sobo/proiecte/NexusChat/ChatApp/mainwindow.ui \
-	C:/Sobo/proiecte/NexusChat/ChatApp/message.ui \
-	C:/Sobo/proiecte/NexusChat/ChatApp/profilewidget.ui \
+	C:/Sobo/proiecte/NexusChat/ChatApp/src/chatwindow.cpp \
+	C:/Sobo/proiecte/NexusChat/ChatApp/src/friendmanage.cpp \
+	C:/Sobo/proiecte/NexusChat/ChatApp/src/friendrequestitem.cpp \
+	C:/Sobo/proiecte/NexusChat/ChatApp/src/friendwidget.cpp \
+	C:/Sobo/proiecte/NexusChat/ChatApp/src/loginwindow.cpp \
+	C:/Sobo/proiecte/NexusChat/ChatApp/src/mainwindow.cpp \
+	C:/Sobo/proiecte/NexusChat/ChatApp/src/message.cpp \
+	C:/Sobo/proiecte/NexusChat/ChatApp/src/profilewidget.cpp \
+	C:/Sobo/proiecte/NexusChat/ChatApp/src/serverconnection.cpp \
+	C:/Sobo/proiecte/NexusChat/ChatApp/src/user.cpp \
+	C:/Sobo/proiecte/NexusChat/ChatApp/ui/chatwindow.ui \
+	C:/Sobo/proiecte/NexusChat/ChatApp/ui/friendmanage.ui \
+	C:/Sobo/proiecte/NexusChat/ChatApp/ui/friendrequestitem.ui \
+	C:/Sobo/proiecte/NexusChat/ChatApp/ui/friendwidget.ui \
+	C:/Sobo/proiecte/NexusChat/ChatApp/ui/loginwindow.ui \
+	C:/Sobo/proiecte/NexusChat/ChatApp/ui/mainwindow.ui \
+	C:/Sobo/proiecte/NexusChat/ChatApp/ui/message.ui \
+	C:/Sobo/proiecte/NexusChat/ChatApp/ui/profilewidget.ui \
 	C:/Sobo/programing/qt/Tools/CMake_64/bin/cmake.exe
