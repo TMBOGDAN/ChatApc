@@ -27,11 +27,11 @@ C++17 compatible compiler
 
 
 ChatApp/
-├─ main.cpp # Application entry point
-├─ loginwindow.h/.cpp # Login and registration logic
-├─ mainwindow.h/.cpp # Main chat window and UI
-├─ profilewidget.h/.cpp # User profile display
-├─ friendwidget.h/.cpp # Friend list items
-├─ serverconnection.h/.cpp # WebSocket client implementation
-├─ ui/ # Qt Designer-generated UI files
-├─ CMakeLists.txt # Build configuration
+main.cpp # Application entry point
+loginwindow.h/.cpp # Login and registration logic
+mainwindow.h/.cpp # Main chat window and UI
+profilewidget.h/.cpp # User profile display
+friendwidget.h/.cpp # Friend list items
+serverconnection.h/.cpp # WebSocket client implementation
+ui/ # Qt Designer-generated UI files
+CMakeLists.txt # Build configuration
